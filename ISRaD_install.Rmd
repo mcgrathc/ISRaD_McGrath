@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+author: "Casey McGrath"
+date: "November 15, 2019"
+output: html_document
+---
+
+
+#This code allows you to:
+(1) Install the ISRaD R-Package and 
+(2) load the dataset. 
+
+#Loading the dataset involved downloading the latest version (as a zip file) and extracting it into a local directory
+#You will want to work with the ISRaD_extra version of the database. It has the lat and long values filled at the profile scale.
+
+```{r setup, echo=FALSE}
+#Set Local Directory where your R-code and the data will live
+setwd("C:\\Users\\NeilA\\Desktop\\Geochemical Landscapes") #You will need to change this to match your local directory
+dir<-getwd()
+```
+
+```{r install, echo=FALSE}
+#This code instals the ISRaD R-Packge. You should only need to run this once
+#devtools::install_github("International-Soil-Radiocarbon-DatabaseYes/ISRaD/Rpkg", ref="master", force=TRUE)
+
+library(tidyverse)
+library(ggplot2)
+library(ISRaD)
+```
+
+```{r dataset, echo=FALSE}
+
+#Download or update the latest version of the dataset
+database<-ISRaD.getdata(dataset="full", extra = T, force_download=T, directory=dir) #Note that the extra = T option ensures you are working the ISRaD_extra data
+
+```
+
+```{r workarnd, echo=FALSE}
+##if problems with getdata(above) use these commands--------------------------------------------------##
+utils::unzip(paste0(dir,"/ISRaD_database_files.zip"), exdir=paste0(dir, "/ISRaD_database_files"))
+database_files<-list.files(paste0(dir, "/ISRaD_database_files"), full.names = T)
+data<-load(paste(dir,"ISRaD_extra_v1-2019-11-07.rda", sep="")) #file name should be updated as needed
+israd.x<-get(data)
+##----------------------------------------------------------------------------------------------------##
+```
